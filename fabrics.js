@@ -1,7 +1,7 @@
 const fabics = [
   {
     id: 1,
-    url: "linen-lavenham-mustard",
+    slug: "linen-lavenham-mustard",
     name: "LINEN LAVENHAM - MUSTARD",
     price: 5,
     description: "WIDTH	150 cm - COMPOSITION	100% Linen",
@@ -10,7 +10,7 @@ const fabics = [
   },
   {
     id: 2,
-    url: "organic-cotton",
+    slug: "organic-cotton",
     name: "Organic Cotton",
     price: 4,
     description: "Width: 57/58-inches - Content: 55% Hemp, 45% Organic Cotton",
@@ -19,7 +19,7 @@ const fabics = [
   },
   {
     id: 3,
-    url: "black-plain-polyester",
+    slug: "black-plain-polyester",
     name: " Black Plain Polyester Cotton Fabric",
     price: 6,
     description: "Width: 57/58-inches  Content: 100% Polyester  ",
@@ -28,7 +28,7 @@ const fabics = [
   },
   {
     id: 4,
-    url: "magnolia-fabrics-trevira-surf",
+    slug: "magnolia-fabrics-trevira-surf",
     name: " Magnolia Fabrics Trevira Surf",
     price: 5,
     description: "Width: 57/58-inches  Content: 100% Polyester  ",
