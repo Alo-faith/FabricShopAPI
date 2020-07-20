@@ -1,20 +1,27 @@
 const express = require("express");
-const fabics = require("./fabrics");
 
 const cors = require("cors");
+let fabrics = require("./fabrics");
 
 const app = express();
 app.use(cors());
 
-app.get("/", (req, res) => {
-  console.log("HELLO");
-  res.json({ message: "Hello World" });
+app.get("/fabrics", (req, res) => {
+  res.json(fabrics);
 });
 
-app.get("/fabrics", (req, res) => {
-  res.json(fabics);
+app.delete("/fabrics/:fabricsId", (req, res) => {
+  const { fabricsId } = req.params;
+  const found = fabrics.find((fabric) => fabric.id === +fabricsId);
+
+  if (found) {
+    fabrics = fabrics.filter((fabric) => fabric.id !== +fabricsId);
+    res.status(204).end();
+  } else {
+    res.status(404).json({ message: "Item not found" });
+  }
 });
 
 app.listen(8000, () => {
-  console.log("The application is running on localhost:8000");
+  console.log("The aplication is runing on localhost:8000");
 });
