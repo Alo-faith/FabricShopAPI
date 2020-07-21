@@ -7,45 +7,23 @@ let fabrics = require("../fabrics");
 // slug
 const slugify = require("slugify");
 
+const {
+  fabricCreate,
+  fabricList,
+  fabricUpdate,
+  fabricDelete,
+} = require("../controllers/fabricsController");
+
 // List
-router.get("/", (req, res) => {
-  res.json(fabrics);
-});
+router.get("/", fabricList);
 
 //   Create
-router.post("/", (req, res) => {
-  const id = fabrics[fabrics.length - 1].id + 1;
-  const slug = slugify(req.body.name, { lower: true });
-  const newFabric = { id, slug, ...req.body };
-  fabrics.push(newFabric);
-  res.status(201).json(newFabric);
-});
+router.post("/", fabricCreate);
 
 //   Delete
-router.delete("/:fabricsId", (req, res) => {
-  const { fabricsId } = req.params;
-  const found = fabrics.find((fabric) => fabric.id === +fabricsId);
-
-  if (found) {
-    fabrics = fabrics.filter((fabric) => fabric.id !== +fabricsId);
-    res.status(204).end();
-  } else {
-    res.status(404).json({ message: "Item not found" });
-  }
-});
+router.delete("/:fabricsId", fabricDelete);
 
 // Update
-router.put("/:fabricsId", (req, res) => {
-  const { fabricsId } = req.params;
-  const found = fabrics.find((fabric) => fabric.id === +fabricsId);
-
-  if (found) {
-    for (const key in req.body) found[key] = req.body[key];
-
-    res.status(204).end();
-  } else {
-    res.status(404).json({ message: "Item not found" });
-  }
-});
+router.put("/:fabricsId", fabricUpdate);
 
 module.exports = router;
