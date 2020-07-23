@@ -1,46 +1,61 @@
 // Data
 let fabrics = require("../fabrics");
+const { Fabric } = require("../db/models");
 
 // slug
 const slugify = require("slugify");
+const { _attributes } = require("../db");
 
 // List
-exports.fabricList = (req, res) => {
-  res.json(fabrics);
+exports.fabricList = async (req, res) => {
+  try {
+    const fabrics = await Fabric.findAll();
+
+    res.json(fabrics);
+  } catch (eor) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 //   Create
-exports.fabricCreate = (req, res) => {
-  const id = fabrics[fabrics.length - 1].id + 1;
-  const slug = slugify(req.body.name, { lower: true });
-  const newFabric = { id, slug, ...req.body };
-  fabrics.push(newFabric);
-  res.status(201).json(newFabric);
+exports.fabricCreate = async (req, res) => {
+  try {
+    const newFabric = await Fabric.create(req.body);
+    res.status(201).json(newFabric);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 //   Delete
-exports.fabricDelete = (req, res) => {
+exports.fabricDelete = async (req, res) => {
   const { fabricsId } = req.params;
-  const found = fabrics.find((fabric) => fabric.id === +fabricsId);
+  try {
+    const foundFabric = await Fabric.findByPk(fabricsId);
+    if (foundFabric) {
+      await foundFabric.destroy();
 
-  if (found) {
-    fabrics = fabrics.filter((fabric) => fabric.id !== +fabricsId);
-    res.status(204).end();
-  } else {
-    res.status(404).json({ message: "Item not found" });
+      res.status(204).end();
+    } else {
+      res.status(404).json({ message: "Fabric not found" });
+    }
+  } catch {
+    res.status(500).json({ message: error.message });
   }
 };
 
 // Update
-exports.fabricUpdate = (req, res) => {
+exports.fabricUpdate = async (req, res) => {
   const { fabricsId } = req.params;
-  const found = fabrics.find((fabric) => fabric.id === +fabricsId);
-
-  if (found) {
-    for (const key in req.body) found[key] = req.body[key];
-
-    res.status(204).end();
-  } else {
-    res.status(404).json({ message: "Item not found" });
+  try {
+    const foundFabric = await Fabric.findByPk(fabricsId);
+    if (foundFabric) {
+      await foundFabric.update(req.body);
+      res.status(204).end();
+    } else {
+      res.status(404).json({ message: "Fabric not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
