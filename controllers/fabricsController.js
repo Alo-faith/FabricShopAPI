@@ -13,49 +13,48 @@ exports.fabricList = async (req, res) => {
 
     res.json(fabrics);
   } catch (eor) {
-    res.status(500).json({ message: error.message });
+    next(error);
+    // res.status(500).json({ message: error.message });
+  }
+};
+
+exports.feachFabric = async (fabricsId, next) => {
+  try {
+    const fabric = await Fabric.findByPk(fabricsId);
+    return fabric;
+  } catch (error) {
+    next(error);
   }
 };
 
 //   Create
-exports.fabricCreate = async (req, res) => {
+exports.fabricCreate = async (req, res, next) => {
   try {
     const newFabric = await Fabric.create(req.body);
     res.status(201).json(newFabric);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
+    // res.status(500).json({ message: error.message });
   }
 };
 
 //   Delete
-exports.fabricDelete = async (req, res) => {
-  const { fabricsId } = req.params;
+exports.fabricDelete = async (req, res, next) => {
   try {
-    const foundFabric = await Fabric.findByPk(fabricsId);
-    if (foundFabric) {
-      await foundFabric.destroy();
-
-      res.status(204).end();
-    } else {
-      res.status(404).json({ message: "Fabric not found" });
-    }
+    await req.fabric.destroy();
+    res.status(204).end();
   } catch {
-    res.status(500).json({ message: error.message });
+    next(error);
+    // res.status(500).json({ message: error.message });
   }
 };
 
 // Update
-exports.fabricUpdate = async (req, res) => {
-  const { fabricsId } = req.params;
+exports.fabricUpdate = async (req, res, next) => {
   try {
-    const foundFabric = await Fabric.findByPk(fabricsId);
-    if (foundFabric) {
-      await foundFabric.update(req.body);
-      res.status(204).end();
-    } else {
-      res.status(404).json({ message: "Fabric not found" });
-    }
+    await req.fabric.update(req.body);
+    res.status(204).end();
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };

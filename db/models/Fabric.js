@@ -10,6 +10,10 @@ Fabric.init(
     name: {
       type: DataTypes.STRING,
     },
+    slug: {
+      type: DataTypes.STRING,
+      unique: true,
+    },
     description: {
       type: DataTypes.STRING,
     },
@@ -19,17 +23,13 @@ Fabric.init(
     image: {
       type: DataTypes.STRING,
     },
-    // slug: {
-    //   type: DataTypes.STRING,
-    //   unique: true,
-    // },
   },
 
   {
     sequelize: db,
   }
 );
-// SequelizeSlugify.slugifyModel(Fabric, {
-//   source: ["name"],
-// });
+SequelizeSlugify.slugifyModel(Fabric, {
+  source: ["name"],
+});
 module.exports = Fabric;

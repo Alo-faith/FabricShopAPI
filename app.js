@@ -16,20 +16,33 @@ const fabricRoutes = require("./routes/fabrics");
 
 const app = express();
 
+app.use(cors());
+app.use(bodyParser.json());
+app.use("/fabrics", fabricRoutes);
+
+// Not found path
+app.use((req, res, next) => {
+  const error = new Error("Path Not Found");
+  error.status = 404;
+  next(error);
+});
+
+// Error Handling Middlewae
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.json(err.message || " Internal Server Error");
+});
+
 const run = async () => {
   try {
     await db.sync();
-    console.log("Connection to the database successful!");
-    // const newFabric = await Fabric.create({ name: "LINEN LAVENHAM" });
-    // console.log(newFabric.toJSON());
-    const fabrics = await Fabric.findAll();
-    fabrics.forEach((fabric) => console.log(fabric.toJSON()));
+    // await db.sync({ alter: true });
+    // console.log("Connection to the database successful!");
+    // const fabrics = await Fabric.findAll();
+    // fabrics.forEach((fabric) => console.log(fabric.toJSON()));
   } catch (error) {
     console.error("Error connecting to the database: ", error);
   }
-  app.use(cors());
-  app.use(bodyParser.json());
-  app.use("/fabrics", fabricRoutes);
 
   app.listen(8000, () => {
     console.log("The application is running on localhost:8000");
