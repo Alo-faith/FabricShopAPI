@@ -1,15 +1,19 @@
 const express = require("express");
-const router = express.Router();
 
+// Controllers
 const {
-  fabricCreate,
   fabricList,
   fabricUpdate,
   fabricDelete,
   feachFabric,
-} = require("../controllers/fabricsController");
+} = require("../controllers/fabricController");
 
-router.param("fabricsId", async (req, res, next, fabricId) => {
+// Middleware
+const upload = require("../middleware/multer");
+
+const router = express.Router();
+
+router.param("fabricId", async (req, res, next, fabricId) => {
   const fabric = await feachFabric(fabricId, next);
 
   if (fabric) {
@@ -25,13 +29,10 @@ router.param("fabricsId", async (req, res, next, fabricId) => {
 // List
 router.get("/", fabricList);
 
-// Create
-router.post("/", fabricCreate);
-
 // Delete
-router.delete("/:fabricsId", fabricDelete);
+router.delete("/:fabricId", fabricDelete);
 
 // Update
-router.put("/:fabricsId", fabricUpdate);
+router.put("/:fabricId", upload.single("image"), fabricUpdate);
 
 module.exports = router;
