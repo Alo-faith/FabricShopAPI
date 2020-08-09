@@ -16,6 +16,7 @@ const { Shop } = require("./db/models");
 const shopRoutes = require("./routes/shops");
 const fabricRoutes = require("./routes/fabrics");
 const path = require("path");
+const userRoutes = require("./routes/users");
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use(bodyParser.json());
 app.use("/shops", shopRoutes);
 app.use("/fabrics", fabricRoutes);
 app.use("/media", express.static(path.join(__dirname, "media")));
+app.use(userRoutes);
 
 // Not found path
 app.use((req, res, next) => {

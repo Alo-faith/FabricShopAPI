@@ -15,7 +15,8 @@ exports.shopList = async (req, res) => {
         {
           model: Fabric,
           as: "fabrics",
-          attributes: { exclude: ["createdAt", "updatedAt"] },
+          // attributes: { exclude: ["createdAt", "updatedAt"] },
+          attributes: ["id"],
         },
       ],
     });
