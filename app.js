@@ -12,6 +12,11 @@ const db = require("./db");
 const { Fabric } = require("./db/models");
 const { Shop } = require("./db/models");
 
+// asspport
+const passport = require("passport");
+
+const { localStrategy } = require("./middleware/passport");
+
 // Route
 const shopRoutes = require("./routes/shops");
 const fabricRoutes = require("./routes/fabrics");
@@ -26,6 +31,8 @@ app.use("/shops", shopRoutes);
 app.use("/fabrics", fabricRoutes);
 app.use("/media", express.static(path.join(__dirname, "media")));
 app.use(userRoutes);
+app.use(passport.initialize());
+passport.use(localStrategy);
 
 // Not found path
 app.use((req, res, next) => {
