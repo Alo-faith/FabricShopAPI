@@ -1,14 +1,12 @@
 // Data
 
-const { Fabric } = require("../db/models");
-const { Shop } = require("../db/models");
+const { Fabric, Shop } = require("../db/models");
 
 // slug
 const slugify = require("slugify");
-const { _attributes } = require("../db");
 
 // List
-exports.fabricList = async (req, res) => {
+exports.fabricList = async (req, res, next) => {
   try {
     const fabrics = await Fabric.findAll({
       attributes: { exclude: ["createdAt", "updatedAt", "shopId"] },
@@ -21,13 +19,13 @@ exports.fabricList = async (req, res) => {
     });
 
     res.json(fabrics);
-  } catch (eor) {
+  } catch (error) {
     next(error);
     // res.status(500).json({ message: error.message });
   }
 };
 
-exports.feachFabric = async (fabricId, next) => {
+exports.fetchFabric = async (fabricId, next) => {
   try {
     const fabric = await Fabric.findByPk(fabricId);
     return fabric;

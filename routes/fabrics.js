@@ -5,7 +5,7 @@ const {
   fabricList,
   fabricUpdate,
   fabricDelete,
-  feachFabric,
+  fetchFabric,
 } = require("../controllers/fabricController");
 
 // Middleware
@@ -14,7 +14,7 @@ const upload = require("../middleware/multer");
 const router = express.Router();
 
 router.param("fabricId", async (req, res, next, fabricId) => {
-  const fabric = await feachFabric(fabricId, next);
+  const fabric = await fetchFabric(fabricId, next);
 
   if (fabric) {
     req.fabric = fabric;

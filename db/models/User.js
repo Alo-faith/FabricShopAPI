@@ -17,6 +17,21 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    role: {
+      type: DataTypes.STRING,
+      defaultValue: "customer",
+    },
+
+    firstName: {
+      type: DataTypes.STRING,
+    },
+    lastName: {
+      type: DataTypes.STRING,
+    },
+
+    email: {
+      type: DataTypes.STRING,
+    },
   },
   {
     sequelize: db,

@@ -6,18 +6,19 @@ const {
   shopList,
   shopUpdate,
   shopDelete,
-  feachShop,
+  fetchShop,
   fabricCreate,
 } = require("../controllers/shopController");
 
 // Middleware
 const upload = require("../middleware/multer");
+const passport = require("passport");
 
 const router = express.Router();
 
 router.param("shopId", async (req, res, next, shopId) => {
-  const shop = await feachShop(shopId, next);
-
+  const shop = await fetchShop(shopId, next);
+  console.log(shop);
   if (shop) {
     req.shop = shop;
     next();
@@ -32,15 +33,34 @@ router.param("shopId", async (req, res, next, shopId) => {
 router.get("/", shopList);
 
 // Create
-router.post("/", upload.single("image"), shopCreate);
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  shopCreate
+);
 
 // Delete
-router.delete("/:shopId", shopDelete);
+router.delete(
+  "/:shopId",
+  passport.authenticate("jwt", { session: false }),
+  shopDelete
+);
 
 // Update
-router.put("/:shopId", upload.single("image"), shopUpdate);
+router.put(
+  "/:shopId",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  shopUpdate
+);
 
 // Create Fabric
-router.post("/:shopId/fabrics", upload.single("image"), fabricCreate);
+router.post(
+  "/:shopId/fabrics",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  fabricCreate
+);
 
 module.exports = router;

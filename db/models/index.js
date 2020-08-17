@@ -7,6 +7,11 @@ const User = require("./User");
 Shop.hasMany(Fabric, { as: "fabrics", foreignKey: "shopId", allowNull: false });
 
 Fabric.belongsTo(Shop, { as: "shop" });
+
+User.hasOne(Shop, { foreignKey: "userId" });
+
+Shop.belongsTo(User, { as: "user", foreignKey: "userId" });
+
 module.exports = {
   Shop,
   Fabric,
