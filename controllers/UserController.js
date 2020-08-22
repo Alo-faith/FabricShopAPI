@@ -8,6 +8,8 @@ const { Shop } = require("../db/models");
 
 exports.signup = async (req, res, next) => {
   const { password } = req.body;
+  // console.log("---password---", password);
+  // console.log("---res.body---", req.body);
   try {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -44,6 +46,7 @@ exports.signin = async (req, res, next) => {
     lastName: user.lastName,
     role: user.role,
     shopSlug: shop ? shop.slug : null,
+
     exp: Date.now() + JWT_EXPIRATION_MS,
   };
   const token = jwt.sign(JSON.stringify(payload), JWT_SECRET);

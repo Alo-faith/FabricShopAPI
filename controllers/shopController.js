@@ -54,6 +54,7 @@ exports.shopCreate = async (req, res, next) => {
     }
     req.body.userId = req.user.id;
     const newShop = await Shop.create(req.body);
+
     res.status(201).json(newShop);
   } catch (error) {
     next(error);
